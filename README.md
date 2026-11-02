@@ -9,7 +9,7 @@ This repository includes a Render Blueprint (`render.yaml`) that builds the Reac
 1. Push this project to a GitHub repository.
 2. Create a MongoDB Atlas cluster. Add a database user, allow connections from Render (Atlas Network Access can use `0.0.0.0/0` for Render's changing outbound IPs), and copy the application connection string. Replace its username, password, and database name. Do not commit the connection string.
 3. Create a Gemini API key in Google AI Studio if you want AI-generated cases. Without the key, the game uses its built-in demo case generator.
-4. In Render, choose **New + → Blueprint**, connect the GitHub repository, and apply the `render.yaml` configuration.
+4. In Render, choose **New +**, then **Blueprint**. Connect the GitHub repository and apply the `render.yaml` configuration.
 5. When prompted for the two secret environment variables, set `MONGODB_URI` to the Atlas connection string and `GEMINI_API_KEY` to your key. Render keeps these out of source control. `NODE_ENV` is set to production by the Blueprint.
 6. Wait for the first deploy to finish, then open the `onrender.com` URL shown on the service page. Check `https://<your-service>.onrender.com/api/v1/health`; a healthy deployment reports `persistence: "mongodb"`.
 
