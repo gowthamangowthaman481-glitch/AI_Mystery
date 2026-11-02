@@ -1,0 +1,33 @@
+import { randomUUID } from 'node:crypto';
+
+export function createDemoCase(scenario, difficulty) {
+  const id = () => randomUUID();
+  const suspects = [
+    { id: 'suspect_01', name: 'Mira Sen', role: 'Event coordinator', background: 'Organized the evening exhibition and controlled the room key log.', motive: 'She wanted the donor plaque moved before the presentation.', alibi: 'Says she was on stage from 8:10 onward.' },
+    { id: 'suspect_02', name: 'Dev Malhotra', role: 'Night technician', background: 'Checked the gallery lights and had access to the service corridor.', motive: 'He was frustrated that his equipment request had been rejected.', alibi: 'Says he left the building at 8:05.' },
+    { id: 'suspect_03', name: 'Anika Rao', role: 'Student archivist', background: 'Catalogued the collection and knew which display case had a loose latch.', motive: 'She believed the artifact should be moved to protect it from a leak.', alibi: 'Says she stayed in the archive room cataloguing returns.' },
+    { id: 'suspect_04', name: 'Rohan Iyer', role: 'Gallery volunteer', background: 'Welcomed guests near the east entrance and carried a canvas tote.', motive: 'He had recently argued with the exhibition sponsor.', alibi: 'Says he was helping guests find the auditorium.' }
+  ];
+  const evidence = [
+    { id: id(), type: 'message', category: 'Digital messages', title: 'A hurried message', description: 'A fictional message exchange recovered from the event planning tablet.', content: { messages: [{ sender: 'Mira', time: '7:42 PM', text: 'Please leave the side display exactly as it is until the donor arrives.' }, { sender: 'Anika', time: '7:46 PM', text: 'The latch is still catching. I can secure it after the tour.' }, { sender: 'Mira', time: '7:48 PM', text: 'No, I will handle it.' }] }, relatedSuspectIds: ['suspect_01', 'suspect_03'], source: 'Fictional reconstructed message', significance: 'Mira knew the display would be inspected and had a reason to approach it.' },
+    { id: id(), type: 'witness', category: 'Witness statements', title: 'The east entrance volunteer', description: 'A statement collected after the gallery closed.', content: { text: 'Rohan remembers seeing Mira leave the stage shortly after the welcome speech. She returned carrying a folded program, though she had not been holding one before.' }, relatedSuspectIds: ['suspect_01', 'suspect_04'], source: 'Fictional witness statement', significance: 'Mira’s claimed uninterrupted time on stage is not supported.' },
+    { id: id(), type: 'cctv', category: 'CCTV observations', title: 'Hallway camera log', description: 'Fictional timestamped observations from the corridor camera.', content: { observations: [{ time: '8:14 PM', text: 'A person matching Mira’s event badge enters the west corridor.' }, { time: '8:19 PM', text: 'The same person returns toward the gallery carrying a folded program.' }] }, relatedSuspectIds: ['suspect_01'], source: 'Fictional camera observation', significance: 'The corridor route connects the stage break to the display room.' },
+    { id: id(), type: 'physical', category: 'Physical evidence', title: 'A clean strip in the dust', description: 'The display shelf was examined after the room was secured.', content: { text: 'A narrow clean rectangle in the dust matches the missing silver compass. The shelf latch has a fresh thumb mark, but no damage.' }, relatedSuspectIds: ['suspect_01', 'suspect_03'], source: 'Fictional scene examination', significance: 'The case was opened with access rather than forced; the object was removed during the event.' },
+    { id: id(), type: 'timeline', category: 'Timeline', title: 'Lighting check record', description: 'A technician’s routine log, entered before the disappearance was reported.', content: { text: 'Dev logged the east gallery lights at 7:58 PM. The control panel confirms he signed out at 8:03 PM.' }, relatedSuspectIds: ['suspect_02'], source: 'Fictional maintenance log', significance: 'Dev’s access looks suspicious, but the timestamp places him elsewhere before the removal.' },
+    { id: id(), type: 'witness', category: 'Witness statements', title: 'Archive room sign-in', description: 'A handwritten sign-in sheet from the back archive.', content: { text: 'Anika signed for a cataloguing box at 8:11 PM. A second archivist countersigned its return at 8:31 PM.' }, relatedSuspectIds: ['suspect_03'], source: 'Fictional archive record', significance: 'Anika had knowledge of the latch, but the independent record supports her alibi.' },
+    { id: id(), type: 'physical', category: 'Physical evidence', title: 'The folded program', description: 'A program recovered on the gallery desk.', content: { text: 'The program has a fresh crease and a faint line of silver polishing compound along one edge.' }, relatedSuspectIds: ['suspect_01'], source: 'Fictional object examination', significance: 'The program could conceal a small object while someone crossed the hall.' }
+  ];
+  const timeline = [
+    { time: '7:58 PM', event: 'Dev completes the gallery lighting check and signs out.' },
+    { time: '8:11 PM', event: 'Anika signs into the archive with a second archivist.' },
+    { time: '8:14 PM', event: 'A person wearing Mira’s event badge enters the west corridor.' },
+    { time: '8:19 PM', event: 'The person returns toward the gallery with a folded program.' },
+    { time: '8:32 PM', event: 'The missing compass is noticed during the donor tour.' }
+  ];
+  return {
+    title: 'The Compass in the West Gallery', scenario, difficulty,
+    caseSummary: 'A silver compass vanished from a locked exhibition display during a crowded evening event. The room was not forced, and several people had plausible access.',
+    suspects, timeline, evidence, culpritId: 'suspect_01',
+    solution: { motive: 'Mira intended to move the compass before the donor tour because she feared the loose display latch would let it fall. She planned to return it, but the tour began before she could.', explanation: 'The hallway observations place Mira away from the stage during the critical window. The witness noticed her return with a folded program, and the polishing compound on that program links it to the display. Dev’s earlier access and Anika’s knowledge of the latch are misleading: the sign-out and archive records support their alibis.', keyEvidenceIds: [evidence[1].id, evidence[2].id, evidence[6].id], sequence: 'Mira left the stage, entered the west corridor, opened the display with the loose latch, wrapped the compass in the folded program, and returned toward the gallery. The donor tour began before she could put it back.' }
+  };
+}
